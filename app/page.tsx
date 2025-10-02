@@ -2,7 +2,6 @@ import Image from "next/image";
 import Reveal from "../components/Reveal";
 import { fetchPinnedRepos } from "../lib/github";
 import Timeline from "../components/Timeline";
-import LazyBored from "../components/LazyBored";
 
 export default async function HomePage() {
     const pinned = await fetchPinnedRepos("acsahl", { first: 6 }).catch(() => []);
@@ -85,14 +84,6 @@ export default async function HomePage() {
                 <Timeline items={experience} />
             </section>
 
-            {/* Lazy Bored Activity */}
-            <section className="container pb-16">
-                <Reveal className="mb-6">
-                    <h2 className="section-title">A Little Something Extra</h2>
-                    <p className="section-subtitle mt-2">Loaded only when you reach here</p>
-                </Reveal>
-                <LazyBored />
-            </section>
 
             {/* About with colorful radial gradients */}
             <section id="about" className="relative overflow-hidden">
