@@ -42,28 +42,28 @@ export default function LazyBored() {
     useEffect(() => {
         if (!hasTriggered) return;
         let cancelled = false;
-		const run = async () => {
-			setLoading(true);
-			setError(null);
-			try {
-				// Try the API route first, fallback to direct API
-				let res = await fetch('/api/bored', { cache: 'no-store' });
-				if (!res.ok) {
-					// Fallback to direct API call
-					res = await fetch('https://bored-api.appbrewery.com/random', { 
-						mode: 'cors',
-						cache: 'no-store' 
-					});
-				}
-				if (!res.ok) throw new Error('Failed to fetch activity');
-				const json = (await res.json()) as Activity;
-				if (!cancelled) setData(json);
-			} catch (e: any) {
-				if (!cancelled) setError(e?.message || 'Error');
-			} finally {
-				if (!cancelled) setLoading(false);
-			}
-		};
+        const run = async () => {
+            setLoading(true);
+            setError(null);
+            try {
+                // Try the API route first, fallback to direct API
+                let res = await fetch('/api/bored', { cache: 'no-store' });
+                if (!res.ok) {
+                    // Fallback to direct API call
+                    res = await fetch('https://bored-api.appbrewery.com/random', {
+                        mode: 'cors',
+                        cache: 'no-store'
+                    });
+                }
+                if (!res.ok) throw new Error('Failed to fetch activity');
+                const json = (await res.json()) as Activity;
+                if (!cancelled) setData(json);
+            } catch (e: any) {
+                if (!cancelled) setError(e?.message || 'Error');
+            } finally {
+                if (!cancelled) setLoading(false);
+            }
+        };
         run();
         return () => {
             cancelled = true;
@@ -75,18 +75,24 @@ export default function LazyBored() {
 		setLoading(true);
 		setError(null);
 		try {
-			// Try the API route first, fallback to direct API
-			let res = await fetch(`/api/bored?t=${Date.now()}`, { cache: 'no-store' });
-			if (!res.ok) {
-				// Fallback to direct API call
-				res = await fetch(`https://bored-api.appbrewery.com/random?t=${Date.now()}`, { 
-					mode: 'cors',
-					cache: 'no-store' 
-				});
-			}
-			if (!res.ok) throw new Error('Failed to fetch activity');
+			// Force a completely fresh request
+			const timestamp = Date.now();
+			const randomParam = Math.random().toString(36).substring(7);
+			const url = `https://bored-api.appbrewery.com/random?t=${timestamp}&r=${randomParam}`;
+			
+			console.log('Fetching new activity from:', url);
+			const res = await fetch(url, { 
+				mode: 'cors',
+				cache: 'no-store',
+				headers: {
+					'Cache-Control': 'no-cache',
+					'Pragma': 'no-cache'
+				}
+			});
+			
+			if (!res.ok) throw new Error(`API error: ${res.status}`);
 			const json = (await res.json()) as Activity;
-			console.log('New activity:', json.activity);
+			console.log('Received activity:', json.activity);
 			setData(json);
 		} catch (e: any) {
 			console.error('Bored API error:', e);
@@ -118,9 +124,15 @@ export default function LazyBored() {
                     ) : null}
                 </div>
             )}
-            <div className="mt-4">
-                <button onClick={refresh} className="rounded-md border border-blue-200 px-3 py-1.5 text-sm text-blue-700 transition hover:bg-blue-50">New idea</button>
-            </div>
+			<div className="mt-4">
+				<button 
+					onClick={refresh} 
+					disabled={loading}
+					className="rounded-md border border-blue-200 px-3 py-1.5 text-sm text-blue-700 transition hover:bg-blue-50 disabled:opacity-50 disabled:cursor-not-allowed"
+				>
+					{loading ? 'Loading...' : 'New idea'}
+				</button>
+			</div>
         </div>
     );
 }
