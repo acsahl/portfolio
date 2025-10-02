@@ -42,41 +42,59 @@ export default function LazyBored() {
     useEffect(() => {
         if (!hasTriggered) return;
         let cancelled = false;
-        const run = async () => {
-            setLoading(true);
-            setError(null);
-            try {
-                const res = await fetch('/api/bored', { cache: 'no-store' });
-                if (!res.ok) throw new Error('Failed to fetch activity');
-                const json = (await res.json()) as Activity;
-                if (!cancelled) setData(json);
-            } catch (e: any) {
-                if (!cancelled) setError(e?.message || 'Error');
-            } finally {
-                if (!cancelled) setLoading(false);
-            }
-        };
+		const run = async () => {
+			setLoading(true);
+			setError(null);
+			try {
+				// Try the API route first, fallback to direct API
+				let res = await fetch('/api/bored', { cache: 'no-store' });
+				if (!res.ok) {
+					// Fallback to direct API call
+					res = await fetch('https://bored-api.appbrewery.com/random', { 
+						mode: 'cors',
+						cache: 'no-store' 
+					});
+				}
+				if (!res.ok) throw new Error('Failed to fetch activity');
+				const json = (await res.json()) as Activity;
+				if (!cancelled) setData(json);
+			} catch (e: any) {
+				if (!cancelled) setError(e?.message || 'Error');
+			} finally {
+				if (!cancelled) setLoading(false);
+			}
+		};
         run();
         return () => {
             cancelled = true;
         };
     }, [hasTriggered]);
 
-    const refresh = async () => {
-        setHasTriggered(true);
-        setLoading(true);
-        setError(null);
-        try {
-            const res = await fetch(`/api/bored?t=${Date.now()}`, { cache: 'no-store' });
-            if (!res.ok) throw new Error('Failed to fetch activity');
-            const json = (await res.json()) as Activity;
-            setData(json);
-        } catch (e: any) {
-            setError(e?.message || 'Error');
-        } finally {
-            setLoading(false);
-        }
-    };
+	const refresh = async () => {
+		setHasTriggered(true);
+		setLoading(true);
+		setError(null);
+		try {
+			// Try the API route first, fallback to direct API
+			let res = await fetch(`/api/bored?t=${Date.now()}`, { cache: 'no-store' });
+			if (!res.ok) {
+				// Fallback to direct API call
+				res = await fetch(`https://bored-api.appbrewery.com/random?t=${Date.now()}`, { 
+					mode: 'cors',
+					cache: 'no-store' 
+				});
+			}
+			if (!res.ok) throw new Error('Failed to fetch activity');
+			const json = (await res.json()) as Activity;
+			console.log('New activity:', json.activity);
+			setData(json);
+		} catch (e: any) {
+			console.error('Bored API error:', e);
+			setError(e?.message || 'Error');
+		} finally {
+			setLoading(false);
+		}
+	};
 
     return (
         <div ref={ref} className="overflow-hidden rounded-xl border border-blue-100 bg-white p-5 shadow-sm">
