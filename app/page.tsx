@@ -99,7 +99,7 @@ export default async function HomePage() {
                     </Reveal>
                     <Reveal>
                         <p className="section-subtitle">
-                            I'm a developer wiht an interest in all things tech!
+                            I'm a developer with an interest in all things tech!
                         </p>
                     </Reveal>
                 </div>
