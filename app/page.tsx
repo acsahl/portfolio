@@ -33,10 +33,10 @@ export default async function HomePage() {
                     </Reveal>
                     <Reveal>
                         <a
-                            href="#github"
+                            href="#languages"
                             className="inline-block rounded-md bg-gray-900 px-5 py-3 text-white shadow-sm transition hover:bg-gray-800 hover:shadow-md"
                         >
-                            View GitHub Pins
+                            View My Skills
                         </a>
                     </Reveal>
                 </div>
@@ -74,6 +74,75 @@ export default async function HomePage() {
                     )}
                 </div>
             </section>
+
+            {/* Languages */}
+            <section id="languages" className="container py-16 md:py-24">
+                <Reveal className="mb-6">
+                    <h2 className="section-title">Languages</h2>
+                    <p className="section-subtitle mt-2">Programming languages I work with</p>
+                </Reveal>
+                <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+                    {[
+                        "Python", "C", "JavaScript", "Java", "SQL", "HTML", "CSS", "JSON", "PHP"
+                    ].map((language) => (
+                        <Reveal key={language}>
+                            <div className="rounded-lg border border-gray-200 bg-white p-4 text-center transition hover:border-orange-200 hover:shadow-md">
+                                <h3 className="font-semibold text-gray-900">{language}</h3>
+                            </div>
+                        </Reveal>
+                    ))}
+                </div>
+            </section>
+
+            {/* Technologies */}
+            <section id="technologies" className="container py-16 md:py-24">
+                <Reveal className="mb-6">
+                    <h2 className="section-title">Technologies</h2>
+                    <p className="section-subtitle mt-2">Tools and frameworks I use</p>
+                </Reveal>
+                <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+                    {[
+                        "React (JS/Native)", "MongoDB", "Express.js", "Git/GitHub", "Figma", "Postman",
+                        "Netlify", "Render", "Expo", "Gemini API", "AWS (MongoDB)", "Oracle SQL",
+                        "Jira", "After Effects", "Docker", "Kubernetes", "Grafana"
+                    ].map((tech) => (
+                        <Reveal key={tech}>
+                            <div className="rounded-lg border border-gray-200 bg-white p-4 transition hover:border-orange-200 hover:shadow-md">
+                                <h3 className="font-semibold text-gray-900">{tech}</h3>
+                            </div>
+                        </Reveal>
+                    ))}
+                </div>
+            </section>
+
+            {/* Certifications */}
+            <section id="certifications" className="container py-16 md:py-24">
+                <Reveal className="mb-6">
+                    <h2 className="section-title">Certifications</h2>
+                    <p className="section-subtitle mt-2">Professional certifications and achievements</p>
+                </Reveal>
+                <div className="grid gap-4 sm:grid-cols-1 lg:grid-cols-2">
+                    {[
+                        { name: "Azure (AZ-900)", issuer: "Microsoft" },
+                        { name: "PCEP Python Entry-Level Programmer", issuer: "Python Institute" },
+                        { name: "Google AI Essentials", issuer: "Google" },
+                        { name: "Adobe Intro to Generative AI", issuer: "Adobe" },
+                        { name: "CodePath Intermediate Technical Interview Preparation", issuer: "CodePath" }
+                    ].map((cert) => (
+                        <Reveal key={cert.name}>
+                            <div className="rounded-lg border border-gray-200 bg-white p-4 transition hover:border-orange-200 hover:shadow-md">
+                                <div className="flex items-start justify-between">
+                                    <div>
+                                        <h3 className="font-semibold text-gray-900">{cert.name}</h3>
+                                        <p className="text-sm text-gray-600">{cert.issuer}</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </Reveal>
+                    ))}
+                </div>
+            </section>
+
 
             {/* Experience Timeline */}
             <section id="experience" className="container py-16 md:py-24">
