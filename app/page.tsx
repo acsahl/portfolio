@@ -99,7 +99,7 @@ export default async function HomePage() {
                     </Reveal>
                     <Reveal>
                         <p className="section-subtitle">
-                            I'm a developer with a passion for building clean, user-focused experiences. This is placeholder text—replace it with a short bio about your background, skills, and interests. Keep it concise and friendly.
+                            I'm a developer wiht an interest in all things tech!
                         </p>
                     </Reveal>
                 </div>
@@ -109,12 +109,13 @@ export default async function HomePage() {
             <footer className="border-t border-orange-100">
                 <div className="container flex flex-col items-center justify-between gap-3 py-8 text-sm text-gray-600 md:flex-row">
                     <Reveal>
-                        <p>© {new Date().getFullYear()} Your Name. All rights reserved.</p>
+                        <p>© {new Date().getFullYear()} Acsah Lukose. All rights reserved.</p>
                     </Reveal>
                     <Reveal>
                         <nav className="flex items-center gap-4">
-                            <a href="#" className="hover:text-orange-600 transition-colors">LinkedIn</a>
-                            <a href="#" className="hover:text-orange-600 transition-colors">GitHub</a>
+                            <a href="https://linkedin.com/in/acsah-lukose" target="_blank" rel="noreferrer" className="hover:text-orange-600 transition-colors">LinkedIn</a>
+                            <a href="https://github.com/acsahl" target="_blank" rel="noreferrer" className="hover:text-orange-600 transition-colors">GitHub</a>
+                            <a href="mailto:lukoseacsah@gmail.com" className="hover:text-orange-600 transition-colors">Email</a>
                             <a href="#about" className="hover:text-orange-600 transition-colors">About</a>
                         </nav>
                     </Reveal>
