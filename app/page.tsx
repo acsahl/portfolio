@@ -2,6 +2,7 @@ import Image from "next/image";
 import Reveal from "../components/Reveal";
 import { fetchPinnedRepos } from "../lib/github";
 import Timeline from "../components/Timeline";
+import LanguageCarousel from "../components/LanguageCarousel";
 
 export default async function HomePage() {
     const pinned = await fetchPinnedRepos("acsahl", { first: 6 }).catch(() => []);
@@ -16,7 +17,7 @@ export default async function HomePage() {
         <main className="min-h-screen">
             {/* Hero with colorful radial gradients */}
             <section className="relative overflow-hidden">
-                <div className="pointer-events-none absolute inset-0 -z-10" style={{
+                <div className="pointer-events-none absolute inset-0 -z-10 animate-gradient-shift" style={{
                     background:
                         "radial-gradient(40rem 16rem at 20% 0%, rgba(251,146,60,0.15), transparent)," +
                         "radial-gradient(50rem 20rem at 80% 10%, rgba(59,130,246,0.15), transparent)," +
@@ -25,8 +26,8 @@ export default async function HomePage() {
                 <div className="container relative flex min-h-[70vh] flex-col items-center justify-center gap-6 text-center">
                     <Reveal>
                         <div className="space-y-4">
-                            <h1 className="text-4xl md:text-6xl font-bold tracking-tight text-gray-900">Acsah Lukose</h1>
-                            <p className="section-subtitle mx-auto">
+                            <h1 className="text-4xl md:text-6xl font-bold tracking-tight text-gray-900 animate-slide-up-fade">Acsah Lukose</h1>
+                            <p className="section-subtitle mx-auto animate-slide-up-fade stagger-1">
                                 A junior at UCF interested in software development and design.
                             </p>
                         </div>
@@ -34,7 +35,7 @@ export default async function HomePage() {
                     <Reveal>
                         <a
                             href="#languages"
-                            className="inline-block rounded-md bg-gray-900 px-5 py-3 text-white shadow-sm transition hover:bg-gray-800 hover:shadow-md"
+                            className="inline-block rounded-md bg-gray-900 px-5 py-3 text-white shadow-sm transition-all duration-300 hover:bg-gray-800 hover:shadow-lg hover:scale-105 hover:rotate-1 animate-scale-in stagger-2"
                         >
                             View My Skills
                         </a>
@@ -45,24 +46,29 @@ export default async function HomePage() {
             {/* GitHub pinned repos */}
             <section id="github" className="container py-16 md:py-24">
                 <Reveal className="mb-6">
-                    <h2 className="section-title">Pinned on GitHub</h2>
-                    <p className="section-subtitle mt-2">Highlighted repositories from acsahl</p>
+                    <h2 className="section-title animate-slide-down-fade">Pinned on GitHub</h2>
+                    <p className="section-subtitle mt-2 animate-slide-up-fade stagger-1">Highlighted repositories from acsahl</p>
                 </Reveal>
                 <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-                    {pinned.map((repo: any) => (
+                    {pinned.map((repo: any, index: number) => (
                         <Reveal key={repo.id}>
-                            <a href={repo.url} target="_blank" rel="noreferrer" className="block rounded-lg border border-orange-100 bg-white p-4 transition hover:-translate-y-[2px] hover:border-orange-200 hover:shadow-lg hover:shadow-orange-50">
+                            <a
+                                href={repo.url}
+                                target="_blank"
+                                rel="noreferrer"
+                                className={`block rounded-lg border border-orange-100 bg-white p-4 transition-all duration-300 hover:-translate-y-[2px] hover:border-orange-200 hover:shadow-lg hover:shadow-orange-50 hover-lift hover-wiggle animate-scale-in stagger-${index + 1}`}
+                            >
                                 <div className="flex items-start justify-between gap-4">
-                                    <h3 className="font-semibold text-gray-900">{repo.name}</h3>
+                                    <h3 className="font-semibold text-gray-900 group-hover:text-orange-600 transition-colors duration-300">{repo.name}</h3>
                                     {repo.primaryLanguage && (
-                                        <span className="flex items-center gap-2 text-xs text-gray-700">
-                                            <span className="inline-block h-2 w-2 rounded-full" style={{ backgroundColor: repo.primaryLanguage.color }} />
+                                        <span className="flex items-center gap-2 text-xs text-gray-700 animate-float-x">
+                                            <span className="inline-block h-2 w-2 rounded-full animate-pulse-glow" style={{ backgroundColor: repo.primaryLanguage.color }} />
                                             {repo.primaryLanguage.name}
                                         </span>
                                     )}
                                 </div>
                                 <p className="mt-2 text-sm text-gray-600 line-clamp-3">{repo.description || 'No description'}</p>
-                                <div className="mt-3 flex items-center gap-4 text-xs text-gray-500">
+                                <div className="mt-3 flex items-center gap-4 text-xs text-gray-500 animate-float-x">
                                     <span>★ {repo.stargazerCount}</span>
                                     <span>⑂ {repo.forkCount}</span>
                                 </div>
@@ -70,7 +76,7 @@ export default async function HomePage() {
                         </Reveal>
                     ))}
                     {pinned.length === 0 && (
-                        <p className="text-sm text-gray-600">Add GITHUB_TOKEN in .env.local to enable pinned repositories.</p>
+                        <p className="text-sm text-gray-600 animate-slide-up-fade">Add GITHUB_TOKEN in .env.local to enable pinned repositories.</p>
                     )}
                 </div>
             </section>
@@ -81,17 +87,9 @@ export default async function HomePage() {
                     <h2 className="section-title">Languages</h2>
                     <p className="section-subtitle mt-2">Programming languages I work with</p>
                 </Reveal>
-                <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-                    {[
-                        "Python", "C", "JavaScript", "Java", "SQL", "HTML", "CSS", "JSON", "PHP"
-                    ].map((language) => (
-                        <Reveal key={language}>
-                            <div className="rounded-lg border border-gray-200 bg-white p-4 text-center transition hover:border-orange-200 hover:shadow-md">
-                                <h3 className="font-semibold text-gray-900">{language}</h3>
-                            </div>
-                        </Reveal>
-                    ))}
-                </div>
+                <Reveal>
+                    <LanguageCarousel />
+                </Reveal>
             </section>
 
             {/* Technologies */}
